@@ -15,6 +15,7 @@ flowchart TD
     I --> J[Validation Gates]
     J --> K[Diagnostic Recovery]
     K --> L[Controlled Output]
+```
 
 ## Layer Summary
 
