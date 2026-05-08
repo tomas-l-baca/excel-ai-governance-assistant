@@ -68,6 +68,30 @@ The system is built as a layered architecture:
 
 ---
 
+## Technology Stack
+
+### Frontend
+- HTML
+- CSS
+- JavaScript
+
+### AI Integration
+- OpenAI API
+- Structured prompt orchestration
+- Controlled AI workflow design
+
+### Application Features
+- Session management
+- Access control
+- Rate limiting
+- Workflow state handling
+
+### Workflow Focus
+- Spreadsheet engineering support
+- AI-assisted Excel workflows
+- Validation-oriented execution
+- Reliability-focused automation
+
 ## Example Use Cases
 
 - Excel formula development  
