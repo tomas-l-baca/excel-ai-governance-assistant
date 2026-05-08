@@ -37,7 +37,7 @@ The goal is to transform LLM usage from **unpredictable interaction** into **rel
 
 ## Application Interface
 
-![Excel AI Governance Assistant Interface](assets/application-interface.png)
+![Excel AI Governance Assistant Interface](assets/application_interface.jpg)
 
 The system is built as a layered architecture:
 
