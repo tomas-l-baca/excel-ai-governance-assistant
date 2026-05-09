@@ -4,6 +4,14 @@ LLM workflow orchestration system designed to produce reliable, controlled outpu
 
 ---
 
+## Application Demo
+
+Short public-safe demonstration of the application interface and workflow behavior.
+
+[View Demo Video](assets/demo/excel-ai-governance-demo.mp4)
+
+---
+
 ## Problem
 
 Using LLMs for complex spreadsheet work is unreliable.
