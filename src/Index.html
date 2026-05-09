@@ -1,0 +1,454 @@
+<!doctype html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8" />
+    <title>Excel Engineering Assistant</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f7fb;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      #appShell {
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+      }
+
+      #appRail {
+        width: 100%;
+        max-width: 980px;
+        height: 100vh;
+        box-sizing: border-box;
+        padding: 16px 24px 20px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+
+      #header {
+        width: 100%;
+        max-width: 820px;
+        margin: 0 auto 10px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 600;
+        color: #1f2933;
+      }
+
+      #subtitle {
+        margin-top: 5px;
+        font-size: 12px;
+        color: #7d8790;
+      }
+
+      #tokenSection {
+        width: 100%;
+        max-width: 820px;
+        margin: 4px auto 8px;
+      }
+
+      #token,
+      #prompt {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #e3e8ee;
+        border-radius: 14px;
+        background: #ffffff;
+      }
+
+      #token {
+        padding: 11px 12px;
+      }
+
+      #log {
+        border: none;
+        padding: 4px 6px 210px;
+        margin-top: 4px;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      #composerWrap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 20px;
+        width: calc(100% - 96px);
+        max-width: 820px;
+        margin: 0 auto;
+        z-index: 20;
+        pointer-events: none;
+      }
+
+      #composer {
+        background: #ffffff;
+        border: 1px solid #e3e8ee;
+        border-radius: 22px;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+        padding: 8px 10px 10px;
+        pointer-events: auto;
+      }
+
+      #prompt {
+        display: block;
+        height: 68px;
+        padding: 8px 10px 4px;
+        border: none;
+        outline: none;
+        resize: none;
+        overflow-y: auto;
+        background: transparent;
+        font: inherit;
+        font-size: 15px;
+        line-height: 1.5;
+        color: #1f2933;
+      }
+
+      button {
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      #runBtn {
+        background: #1a73e8;
+        color: #fff;
+        border: none;
+        padding: 11px 18px;
+        font-size: 14px;
+        min-width: 84px;
+        height: 40px;
+      }
+
+      #newChatBtn {
+        background: transparent;
+        color: #5f6b76;
+        border: 1px solid #e1e5ea;
+        padding: 9px 14px;
+        font-size: 13px;
+      }
+
+      .message {
+        border: none;
+        padding: 14px 16px;
+        margin-bottom: 12px;
+        border-radius: 18px;
+        max-width: 74%;
+        width: fit-content;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+      }
+
+      .user {
+        margin-left: auto;
+        background: #eef4fb;
+      }
+
+      .assistant {
+        margin-right: auto;
+        background: #f7f7f8;
+      }
+
+      .error {
+        margin-right: auto;
+        background: #fdecea;
+        border: 1px solid #e7c9c5;
+      }
+
+      .label {
+        font-weight: 600;
+        font-size: 11px;
+        margin-bottom: 10px;
+        color: #98a1aa;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .body {
+        white-space: pre-wrap;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #24303a;
+      }
+
+      pre {
+        background: #61656a;
+        color: #f5f5f5;
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 13px;
+      }
+
+      .copy-btn {
+        background: #ffffff;
+        color: #5f6b76;
+        border: 1px solid #e1e5ea;
+        padding: 5px 9px;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      @media (max-width: 820px) {
+        #appRail {
+          padding: 10px 12px 12px;
+        }
+
+        #composerWrap {
+          width: calc(100% - 20px);
+          bottom: 10px;
+        }
+
+        #prompt {
+          height: 64px;
+          font-size: 14px;
+        }
+
+        #runBtn {
+          min-width: 72px;
+          height: 36px;
+          padding: 10px 14px;
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="appShell">
+      <div id="appRail">
+        <div id="header">
+          <div>
+            <h3>Excel Engineering Assistant</h3>
+            <div id="subtitle">Spreadsheet engineering, governance, and automation support</div>
+          </div>
+          <button id="newChatBtn" onclick="newChat()">New Chat</button>
+        </div>
+
+        <div id="tokenSection">
+          <p style="font-size:12px;font-weight:600;color:#7D8790;">Access Key</p>
+          <input id="token" type="password" placeholder="Enter your access key" autocomplete="off" />
+        </div>
+
+        <div id="log"></div>
+
+        <div id="composerWrap">
+          <div id="status" style="margin:0 0 10px 6px;color:#7D8790;font-size:12px;min-height:18px;"></div>
+
+          <div id="composer">
+            <textarea
+              id="prompt"
+              maxlength="4000"
+              placeholder="Your conversation here..."
+              onkeydown="handlePromptKey(event)"
+              oninput="updatePromptCount()"
+            ></textarea>
+
+            <div style="display:flex;justify-content:flex-end;margin-top:6px;">
+              <button id="runBtn" onclick="run()">Run</button>
+            </div>
+
+            <div style="margin-top:8px;display:flex;justify-content:space-between;font-size:11px;color:#7D8790;">
+              <div>Press Enter to send. Press Shift+Enter for a new line.</div>
+              <div id="promptCount">0 / 4000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let chatHistory = [];
+      let sessionId = makeSessionId();
+
+      function makeSessionId() {
+        return 's-' + Date.now() + '-' + Math.random().toString(36).slice(2, 12);
+      }
+
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      function renderSimpleMarkdown(text) {
+        return escapeHtml(text)
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/`([^`]+)`/g, '<code>$1</code>');
+      }
+
+      function appendLog(label, text) {
+        const log = document.getElementById('log');
+
+        const wrap = document.createElement('div');
+        wrap.className =
+          label === 'USER' ? 'message user' :
+          label === 'ERROR' ? 'message error' :
+          'message assistant';
+
+        const header = document.createElement('div');
+        header.className = 'label';
+        header.textContent =
+          label === 'USER' ? 'You' :
+          label === 'ERROR' ? 'Error' :
+          'Assistant';
+
+        const body = document.createElement('div');
+        body.className = 'body';
+
+        if (label === 'ASSISTANT' && text.includes('```')) {
+          renderCodeAwareResponse(body, text);
+        } else if (label === 'ASSISTANT') {
+          body.innerHTML = renderSimpleMarkdown(text);
+        } else {
+          body.textContent = text;
+        }
+
+        wrap.appendChild(header);
+        wrap.appendChild(body);
+        log.appendChild(wrap);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function renderCodeAwareResponse(container, text) {
+        const parts = String(text).split(/```/);
+
+        parts.forEach(function (part, index) {
+          if (index % 2 === 1) {
+            const codeText = part.replace(/^\n+|\n+$/g, '');
+
+            const copyBtn = document.createElement('button');
+            copyBtn.textContent = 'Copy';
+            copyBtn.className = 'copy-btn';
+            copyBtn.onclick = function () {
+              navigator.clipboard.writeText(codeText);
+              copyBtn.textContent = 'Copied';
+              setTimeout(function () {
+                copyBtn.textContent = 'Copy';
+              }, 1200);
+            };
+
+            const pre = document.createElement('pre');
+            pre.textContent = codeText;
+
+            container.appendChild(copyBtn);
+            container.appendChild(pre);
+          } else if (part.trim()) {
+            const div = document.createElement('div');
+            div.innerHTML = renderSimpleMarkdown(part.trim());
+            container.appendChild(div);
+          }
+        });
+      }
+
+      function handlePromptKey(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          run();
+        }
+      }
+
+      function updatePromptCount() {
+        const prompt = document.getElementById('prompt').value;
+        document.getElementById('promptCount').textContent = prompt.length + ' / 4000';
+      }
+
+      function setStatus(text) {
+        document.getElementById('status').textContent = text;
+      }
+
+      function clearStatus() {
+        document.getElementById('status').textContent = '';
+      }
+
+      function setLoading(isLoading) {
+        const runBtn = document.getElementById('runBtn');
+        const newChatBtn = document.getElementById('newChatBtn');
+        const tokenInput = document.getElementById('token');
+        const promptBox = document.getElementById('prompt');
+
+        runBtn.disabled = isLoading;
+        newChatBtn.disabled = isLoading;
+        tokenInput.disabled = isLoading;
+        promptBox.disabled = isLoading;
+
+        runBtn.textContent = isLoading ? 'Running...' : 'Run';
+        setStatus(isLoading ? 'Running...' : '');
+      }
+
+      function newChat() {
+        document.getElementById('log').innerHTML = '';
+        document.getElementById('prompt').value = '';
+        chatHistory = [];
+        sessionId = makeSessionId();
+        updatePromptCount();
+        clearStatus();
+      }
+
+      function run() {
+        const accessKey = document.getElementById('token').value.trim();
+        const prompt = document.getElementById('prompt').value.trim();
+
+        if (!accessKey) {
+          appendLog('ERROR', 'Missing Access Key.');
+          return;
+        }
+
+        if (!prompt) {
+          appendLog('ERROR', 'Missing request.');
+          return;
+        }
+
+        appendLog('USER', prompt);
+        setLoading(true);
+
+        google.script.run
+          .withSuccessHandler(function (response) {
+            appendLog('ASSISTANT', response);
+
+            chatHistory = [
+              ...chatHistory,
+              { role: 'user', content: prompt },
+              { role: 'assistant', content: response }
+            ].slice(-10);
+
+            document.getElementById('prompt').value = '';
+            updatePromptCount();
+            setLoading(false);
+          })
+          .withFailureHandler(function (error) {
+            appendLog('ERROR', error && error.message ? error.message : String(error));
+            setLoading(false);
+          })
+          .runBuild({
+            accessKey: String(accessKey),
+            userText: String(prompt),
+            sessionId: String(sessionId)
+          });
+      }
+
+      updatePromptCount();
+    </script>
+  </body>
+</html>
