@@ -67,11 +67,9 @@ The UI redesign process was used as a practical learning environment for:
 
 ## Before and After Comparison
 
-### Early Interface
-(Add screenshot here)
+## Before and After Comparison
 
-### Refined Interface
-(Add screenshot here)
+![UI Evolution Comparison](../assets/ui-evolution/ui-before-after-comparison.jpg)
 
 ---
 
