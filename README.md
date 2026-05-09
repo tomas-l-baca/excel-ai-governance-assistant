@@ -6,9 +6,19 @@ LLM workflow orchestration system designed to produce reliable, controlled outpu
 
 ## Application Demo
 
-Short public-safe demonstration of the application interface and workflow behavior.
+Public-safe demonstration of the application interface, workflow behavior, and frontend interaction design.
 
-[View Demo Video](assets/demo/excel-ai-governance-demo.mp4)
+The demo highlights:
+
+- structured workflow interaction
+- AI-assisted execution flow
+- frontend interface behavior
+- implementation refinement
+- iterative UI evolution
+
+Protected prompt architecture and proprietary orchestration systems are intentionally omitted from the public demonstration.
+
+[Watch Application Demo](https://www.youtube.com/watch?v=1nR9EEgSyUU)
 
 ---
 
