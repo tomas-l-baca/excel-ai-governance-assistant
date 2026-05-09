@@ -58,6 +58,21 @@ The system is built as a layered architecture:
 
 ---
 
+## Code Review Guide
+
+This repository includes sanitized implementation code to demonstrate application structure and development capability while protecting the proprietary prompt architecture.
+
+### Files to Review
+
+| File | What It Demonstrates |
+|---|---|
+| `src/Code.gs` | Server-side request handling, access validation, rate limiting, session cache usage, API request structure, and error handling |
+| `src/Index.html` | Frontend interface structure, user input handling, response rendering, code block display, copy-button behavior, loading state, and mobile-responsive layout |
+
+### What Is Not Included
+
+The protected prompt system, internal governance architecture, and proprietary workflow logic are intentionally omitted. The published code demonstrates implementation capability without exposing the system’s unique control architecture.
+
 ## Key Capabilities
 
 - Controlled multi-step LLM execution  
