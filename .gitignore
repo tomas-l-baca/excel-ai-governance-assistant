@@ -1,0 +1,30 @@
+# Environment and secrets
+.env
+.env.*
+*.key
+*.pem
+credentials.json
+secrets.json
+token.json
+
+# Logs
+*.log
+logs/
+
+# Mac system files
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+
+# Editor settings
+.vscode/
+.idea/
+
+# Node dependencies if added later
+node_modules/
+
+# Build output if added later
+dist/
+build/
